@@ -133,6 +133,8 @@ function validateForm() {
   const nameInput = form.querySelector('input[name="name"]');
   const positionInput = form.querySelector('input[name="position"]');
   const ageInput = form.querySelector('input[name="age"]');
+  const salaryInput = form.querySelector('input[name="salary"]');
+  const officeSelect = form.querySelector('select[name="office"]');
 
   const minNameLength = 4;
   const minAge = 18;
@@ -141,10 +143,12 @@ function validateForm() {
   const namePerson = nameInput.value.trim();
   const position = positionInput.value.trim();
   const age = +ageInput.value;
+  const salary = +salaryInput.value;
+  const office = officeSelect.value;
 
   if (namePerson.length < minNameLength) {
     showNotification(
-      'Title of Error message',
+      'Error',
       `Name must be at least ${minNameLength} characters long.`,
       'error',
     );
@@ -153,21 +157,29 @@ function validateForm() {
   }
 
   if (!position) {
-    showNotification(
-      'Title of Error message',
-      'Position is required.',
-      'error',
-    );
+    showNotification('Error', 'Position is required.', 'error');
+
+    return false;
+  }
+
+  if (!office) {
+    showNotification('Error', 'Office is required.', 'error');
 
     return false;
   }
 
   if (age < minAge || age > maxAge) {
     showNotification(
-      'Title of Error message',
+      'Error',
       `Age must be between ${minAge} and ${maxAge}.`,
       'error',
     );
+
+    return false;
+  }
+
+  if (!salary || isNaN(Number(salary)) || Number(salary) <= 0) {
+    showNotification('Error', 'Salary must be a positive number.', 'error');
 
     return false;
   }
@@ -202,8 +214,8 @@ form.addEventListener('submit', (e) => {
     name: formData.get('name'),
     position: formData.get('position'),
     office: formData.get('office'),
-    age: formData.get('age'),
-    salary: formData.get('salary'),
+    age: +formData.get('age'),
+    salary: +formData.get('salary'),
   };
 
   addEmployeeToTable(employee);
