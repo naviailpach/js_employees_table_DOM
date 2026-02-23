@@ -5,6 +5,10 @@ const tableBody = document.querySelector('tbody');
 const form = createForm();
 
 function toNumber(value) {
+  if (!value) {
+    return NaN;
+  }
+
   return +value.replace(/[$,]/g, '');
 }
 
